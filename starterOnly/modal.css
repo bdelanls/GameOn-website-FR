@@ -14,7 +14,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-image: url("background.png");
+  /* background-image: url("background.png"); */
   font-family: var(--font-default);
   font-size: 18px;
   max-width: 1300px;
@@ -36,6 +36,18 @@ img {
 }
 .header-logo {
     float: left;
+}
+@media screen and (max-width: 850px) {
+  .header-logo img{
+    width: 190px;
+    margin-top: 10px;
+  }
+}
+@media screen and (max-width: 540px) {
+  .header-logo img{
+    width: 122px;
+    margin-top: 18px;
+  }
 }
 .main-navbar {
     float: right;
@@ -68,7 +80,7 @@ img {
   display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 850px) {
   .topnav a {display: none;}
   .topnav a.icon {
     float: right;
@@ -76,12 +88,12 @@ img {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 850px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 7px;
+    top: 7px;
   }
   .topnav.responsive a {
     float: none;
@@ -97,7 +109,6 @@ img {
   .topnav a.icon {
     float: right;
     display: block;
-    margin-top: -15px;
   }
 } 
 
@@ -167,6 +178,7 @@ main {
   width: 100%;
   overflow: auto;
   background-color: rgba(26, 39, 156, 0.4);
+  transition: opacity 0.3s ease;
 }
 
 .content {
@@ -187,13 +199,18 @@ main {
   padding: 15px 8%;
   margin: 15px auto;
 }
-
+.formData{
+  margin-bottom: 16px;
+}
 label {
   font-family: var(--font-default);
-  font-size: 17px;
+  font-size: 14px;
   font-weight: normal;
   display: inline-block;
-  margin-bottom: 11px;
+  margin: 0 0 10px 0;
+}
+label.checkbox-label, label.checkbox2-label{
+  margin: 0 0 0 36px;
 }
 input {
   padding: 8px;
@@ -210,7 +227,7 @@ input {
 }
 .formData[data-error]::after {
   content: attr(data-error);
-  font-size: 0.4em;
+  font-size: 0.5em;
   color: #e54858;
   display: block;
   margin-top: 7px;
@@ -402,10 +419,11 @@ input[data-error]::after {
 /* custom select end */
 .text-label {
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
+  margin: 16px 0 0 0;
 }
 .hero-section {
-  min-height: 93vh;
+  min-height: 70vh;
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -462,6 +480,7 @@ input[data-error]::after {
   height: 100%;
   display: block;
   padding: 0;
+  object-fit: cover;
 }
 .copyrights {
   color: #fe142f;
@@ -478,15 +497,24 @@ footer {
   padding-right: 2vw;
   margin: 0 20px;
 }
-@media screen and (max-width: 800px) {
+
+@media screen and (max-width: 850px) {
+  .topnav{
+    margin: 20px 5px 20px 20px;
+    padding: 7px;
+  }
+  
+
   .hero-section {
     display: block;
     box-shadow: unset;
+    min-height: auto;
   }
   .hero-content {
     background: #fff;
     color: #000;
-    padding: 20px;
+    padding: 0;
+    min-width: auto;
   }
   .hero-content::after {
     content: unset;
@@ -495,12 +523,14 @@ footer {
     display: none;
   }
   .hero-headline {
-    font-size: 4.5rem;
+    font-size: 4rem;
     white-space: normal;
   }
   .hero-text {
     width: unset;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    margin: 22px 0 0 0;
+
   }
   .hero-img img {
     border-radius: 10px;
@@ -514,8 +544,21 @@ footer {
   .copyrights {
     margin-top: 50px;
     text-align: center;
+    font-size: 0.8rem;
+    font-weight: 400;
   }
 }
+
+@media screen and (max-width: 540px) {
+  .hero-headline {
+    font-size: 2.3rem;
+  }
+  .hero-text {
+    font-size: 0.8rem;
+  }
+}
+
+
 
 @keyframes modalopen {
   from {
@@ -527,3 +570,16 @@ footer {
   }
 }
 
+/*************/
+
+.modal-body h3{
+  font-size: 36px;
+  font-weight: 400;
+  text-align: center;
+}
+.btn-close{
+  position: absolute;
+  bottom: 30px;
+  right: 0;
+  left: 0;
+}
