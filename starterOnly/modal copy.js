@@ -60,44 +60,45 @@ btnSubmit.addEventListener("click", event => {
 
   // initialisation 
   formValide = true;
-
+  //formValues = {};
 
   // test prénom
   const firstNameInput = document.getElementById("first");
-  validerTextInput(firstNameInput);
-  
+  validerTextInput(firstNameInput, 0);
+
   // test nom
   const nameInput = document.getElementById("last");
-  validerTextInput(nameInput);
+  validerTextInput(nameInput, 1);
 
   // test email
   const emailInput = document.getElementById("email");
-  validerEmailInput(emailInput);
+  validerEmailInput(emailInput, 2);
 
   // test date de naissance
   const birthdateInput = document.getElementById("birthdate");
-  validerBirthdateInput(birthdateInput);
+  validerBirthdateInput(birthdateInput, 3);
 
   // test nombre de tournois
   const quantityInput = document.getElementById("quantity");
-  validerQuantityInput(quantityInput);  
+  validerQuantityInput(quantityInput, 4);  
 
   // test participation tournois
   const locationInputs = document.querySelectorAll(".checkbox-input[name='location'");
-  validerLocationInput(locationInputs);  
+  validerLocationInput(locationInputs, 5);  
 
   // test des conditions d'utilisation
   const checkbox1Input = document.getElementById("checkbox1");
-  validerCheckboxInput(checkbox1Input);
+  validerCheckboxInput(checkbox1Input, 6);
 
   // test prochains évènements
   const checkbox2Input = document.getElementById("checkbox2");
-  validerCheckboxInput(checkbox2Input);
+  validerCheckboxInput(checkbox2Input, 7);
+
+  console.log(formValues);
+  console.log("Le formulaire est :", formValide);
 
   // toutes les réponses sont bonnes
   if(formValide){
-
-    console.log(formValues);
     
     let contentHeight = contentModal.clientHeight;
     contentModal.style.height = contentHeight + "px";
@@ -121,50 +122,58 @@ btnSubmit.addEventListener("click", event => {
     });
 
   }
+
 });
 
 
 // Validation des champs texte
-function validerTextInput(input){
-
+function validerTextInput(input, formDataNum){
   let inputValue = input.value.trim();
-
+  let inputName = input.name;
   try {
     if(inputValue === ""){
       throw new Error("Ce champ est obligatoire.");
     }else if(inputValue.length < 2){
       throw new Error("La réponse est trop courte.");
     }else{
-      inputValide(input, inputValue);
+      supprimerMessageErreur(formDataNum);
+      formValues[inputName] = inputValue;
     }
+
   } catch(error) {
-    afficheMessageErreur(input, error.message);
+    afficheMessageErreur(error.message, formDataNum);
+    formValide = false;
   }
 }
 
 // Validation du champ Email
-function validerEmailInput(input){
+function validerEmailInput(input, formDataNum){
 
   let inputValue = input.value.trim();
+  let inputName = input.name;
   const emailRegex = new RegExp("[A-Za-z0-9._-]+@[A-Za-z0-9._-]+\\.[A-Za-z0-9._-]+");
-
   try {
     if(inputValue === ""){
       throw new Error("Ce champ est obligatoire.");
-    }else if(!emailRegex.test(inputValue)){
+    }
+    if(!emailRegex.test(inputValue)){
       throw new Error("L'email n'est pas valide.");
     }else{
-      inputValide(input, inputValue);
+      supprimerMessageErreur(formDataNum);
+      formValues[inputName] = inputValue;
     }
+
   } catch(error) {
-    afficheMessageErreur(input, error.message);
+    afficheMessageErreur(error.message, formDataNum);
+    formValide = false;
   }
 }
 
 // Validation du champ date de naissance
-function validerBirthdateInput(input){
+function validerBirthdateInput(input, formDataNum){
 
   let inputValue = input.value.trim();
+  let inputName = input.name;
 
   try {
     let dateAnniversaire = new Date(inputValue);
@@ -175,18 +184,21 @@ function validerBirthdateInput(input){
     }else if (dateAnniversaire >= dateAujourdhui){
       throw new Error("La date doit être antérieur à aujourd'hui.");
     }else{
-      inputValide(input, inputValue);
+      supprimerMessageErreur(formDataNum);
+      formValues[inputName] = inputValue;
     }
 
   } catch(error) {
-    afficheMessageErreur(input, error.message);
+    afficheMessageErreur(error.message, formDataNum);
+    formValide = false;
   }
 }
 
 // Validation du champ nombre de tournois
-function validerQuantityInput(input){
+function validerQuantityInput(input, formDataNum){
 
   let inputValue = parseInt(input.value);
+  let inputName = input.name;
   try {
     if(isNaN(inputValue)) {
       throw new Error("Entrer un nombre.");
@@ -194,16 +206,18 @@ function validerQuantityInput(input){
     if(inputValue > 99){
       throw new Error("La quantité est trop grande.");
     }else{
-      inputValide(input, inputValue);
+      supprimerMessageErreur(formDataNum);
+      formValues[inputName] = inputValue;
     }
 
   } catch(error) {
-    afficheMessageErreur(input, error.message);
+    afficheMessageErreur(error.message, formDataNum);
+    formValide = false;
   }
 }
 
 // Validation du lieu du tournoi
-function validerLocationInput(inputs) {
+function validerLocationInput(inputs, formDataNum) {
   let inputValue = null;
   let inputName = null;
 
@@ -217,16 +231,18 @@ function validerLocationInput(inputs) {
     if(inputValue === null) {
       throw new Error("Vous devez selectionner un tournoi.")
     }else{
-      inputValide(inputs[0], inputValue);
+      supprimerMessageErreur(formDataNum);
+      formValues[inputName] = inputValue;
     }
 
   } catch(error) {
-    afficheMessageErreur(inputs[0], error.message);
+    afficheMessageErreur(error.message, formDataNum);
+    formValide = false;
   }
 }
 
 // Validation checkbox condition d'utilisation et contact
-function validerCheckboxInput(checkbox){
+function validerCheckboxInput(checkbox, formDataNum){
   let checkbox1Label = document.querySelector("label[for='checkbox1']");
   let checkbox1Icon = document.querySelector("label[for='checkbox1'] span")
   
@@ -243,21 +259,15 @@ function validerCheckboxInput(checkbox){
 
 
 // Affiche le message d'erreur
-function afficheMessageErreur(input, message){
-  input.parentNode.setAttribute("data-error", message);
-  input.parentNode.setAttribute("data-error-visible", "true");
-  formValide = false;
+function afficheMessageErreur(message, formDataNum){
+  formData[formDataNum].setAttribute("data-error", message);
+  formData[formDataNum].setAttribute("data-error-visible", "true");
 }
 
 // Supprime le message d'erreur
-function supprimerMessageErreur(input){
-  input.parentNode.removeAttribute("data-error");
-  input.parentNode.removeAttribute("data-error-visible");
+function supprimerMessageErreur(formDataNum){
+  formData[formDataNum].removeAttribute("data-error");
+  formData[formDataNum].removeAttribute("data-error-visible");
 }
 
-// La valeur entrée est valide
-function inputValide(input, inputValue){
-  let inputName = input.name;
-  supprimerMessageErreur(input);
-  formValues[inputName] = inputValue;
-}
+
