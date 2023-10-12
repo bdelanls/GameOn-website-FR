@@ -10,7 +10,6 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData");
 
 const formulaire = document.querySelector("form");
 const contentModal = document.querySelector(".content");
@@ -28,16 +27,16 @@ function launchModal() {
 
 /*****************************************************************/
 
-// fermer le modal
+// Événement pour fermer le modal
 btnClose.addEventListener("click", ()=>{
   modalbg.style.opacity = 0;
   modalbg.addEventListener("transitionend", attendreFinAnimation);
   resetForm();
 });
 
-// attendre la fin de la transition du modal
+// Attendre la fin de la transition du modal et supprimer l'attribut style
 function attendreFinAnimation(){
-  modalbg.removeEventListener("transitionend", attendreFinAnimation);
+  modalbg.removeEventListener("transitionend", attendreFinAnimation); // Supprime l'écouteur d'événement
   modalbg.removeAttribute("style");
 }
 
@@ -55,6 +54,7 @@ let formValues = {};
 let formValide = null;
 
 
+// Événement lors du clic sur le bouton "je m'inscris"
 btnSubmit.addEventListener("click", event => {
   event.preventDefault();
 
@@ -94,10 +94,10 @@ btnSubmit.addEventListener("click", event => {
   const checkbox2Input = document.getElementById("checkbox2");
   validerCheckboxInput(checkbox2Input);
 
-  // toutes les réponses sont bonnes
+  // Si toutes les entrées sont valides, afficher un message de remerciement
   if(formValide){
 
-    console.log(formValues);
+    console.log(formValues); // Log des valeurs du formulaire pour débogage
     
     let contentHeight = contentModal.clientHeight;
     contentModal.style.height = contentHeight + "px";
@@ -111,10 +111,10 @@ btnSubmit.addEventListener("click", event => {
     `;
     modalBody.innerHTML = div;
 
-    // Le bouton pour fermer
-    btnClose2 = document.querySelector(".btn-close");
+    // Bouton pour fermer le message de remerciement
+    let btnClose2 = document.querySelector(".btn-close");
 
-    // fermer le modal
+    // Événement pour fermer le modal de remerciement
     btnClose2.addEventListener("click", ()=>{
       modalbg.style.opacity = 0;
       modalbg.addEventListener("transitionend", attendreFinAnimation);
@@ -242,20 +242,20 @@ function validerCheckboxInput(checkbox){
 }
 
 
-// Affiche le message d'erreur
+// Affiche les messages d'erreur
 function afficheMessageErreur(input, message){
   input.parentNode.setAttribute("data-error", message);
   input.parentNode.setAttribute("data-error-visible", "true");
   formValide = false;
 }
 
-// Supprime le message d'erreur
+// Supprime les messages d'erreur
 function supprimerMessageErreur(input){
   input.parentNode.removeAttribute("data-error");
   input.parentNode.removeAttribute("data-error-visible");
 }
 
-// La valeur entrée est valide
+// Fonction pour traiter une entrée valide
 function inputValide(input, inputValue){
   let inputName = input.name;
   supprimerMessageErreur(input);
